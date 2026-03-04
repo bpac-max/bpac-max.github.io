@@ -239,6 +239,38 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
 @media(max-width:900px){.legends-grid{grid-template-columns:1fr 1fr;}.buzz-grid,.matchups-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:700px){.depth-grid,.stadium-wrap,.facts-grid{grid-template-columns:1fr;}.buzz-grid,.matchups-grid,.legends-grid{grid-template-columns:1fr;}}
 @media(max-width:600px){nav{padding:0 12px;}.nav-links{gap:2px;}.nav-links button{font-size:0.62rem;padding:6px 8px;letter-spacing:1px;}.section-wrap{padding:50px 16px;}.quiz-options{grid-template-columns:1fr;}.sched-row{grid-template-columns:70px 1fr auto;padding:10px 14px;}}
+
+/* PLAYER MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,10,30,0.85);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:white;border-radius:20px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 30px 80px rgba(0,0,0,0.4);}
+.modal-header{background:var(--blue);padding:32px 32px 24px;border-radius:20px 20px 0 0;position:relative;}
+.modal-number{font-family:"Barlow Condensed",sans-serif;font-size:6rem;font-weight:900;color:rgba(255,255,255,0.07);position:absolute;right:24px;top:10px;line-height:1;}
+.modal-name{font-family:"Barlow Condensed",sans-serif;font-size:2rem;font-weight:900;text-transform:uppercase;color:white;line-height:1;position:relative;}
+.modal-sub{font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:6px;letter-spacing:1px;position:relative;}
+.modal-badge-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;position:relative;}
+.modal-tag{font-size:0.6rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:20px;}
+.modal-tag-orange{background:var(--orange);color:white;}
+.modal-tag-blue{background:rgba(255,255,255,0.15);color:white;}
+.modal-body{padding:28px 32px;}
+.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.modal-stat{background:var(--light);border-radius:10px;padding:14px;text-align:center;}
+.modal-stat-val{font-family:"Barlow Condensed",sans-serif;font-size:1.6rem;font-weight:900;color:var(--blue);line-height:1;}
+.modal-stat-lbl{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:600;}
+.modal-bio{font-size:0.88rem;color:var(--muted);line-height:1.8;}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;z-index:10;}
+.modal-close:hover{background:rgba(255,255,255,0.3);}
+.player-card{cursor:pointer;}
+
+/* QUIZ PROGRESS BAR */
+.quiz-progress-wrap{margin-bottom:16px;}
+.quiz-progress-bar-track{background:rgba(0,45,114,0.1);border-radius:99px;height:8px;overflow:hidden;}
+.quiz-progress-bar-fill{background:var(--orange);height:100%;border-radius:99px;transition:width 0.4s ease;}
+.quiz-progress-label{display:flex;justify-content:space-between;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:6px;}
+.quiz-pct-display{font-family:"Barlow Condensed",sans-serif;font-size:1.1rem;font-weight:900;color:var(--orange);}
+
+/* LEGEND MODAL (reuse modal styles, dark header variant) */
+.legend-card{cursor:pointer;}
 </style>
 </head>
 <body>
@@ -348,20 +380,20 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
 <div class="page" id="page-roster">
   <div style="background:var(--light);">
   <div class="section-wrap">
-    <div class="section-header reveal"><div><div class="section-tag">2026 Squad</div><h2 class="section-title">The Roster</h2></div><div style="font-size:0.78rem;color:var(--muted);letter-spacing:1px;">&#128992; = New Addition</div></div>
+    <div class="section-header reveal"><div><div class="section-tag">2026 Squad</div><h2 class="section-title">The Roster</h2></div><div style="font-size:0.78rem;color:var(--muted);letter-spacing:1px;">Click any player for full bio</div></div>
     <div class="roster-grid">
-      <div class="player-card reveal"><div class="player-num">22</div><div class="player-details"><div class="player-name">Juan Soto</div><div class="player-pos">Right Field &middot; Age 27 &middot; $765M &middot; Generational Hitter</div></div><span class="player-badge badge-fav">Fan Fav</span></div>
-      <div class="player-card reveal"><div class="player-num">12</div><div class="player-details"><div class="player-name">Francisco Lindor</div><div class="player-pos">Shortstop &middot; Age 32 &middot; Team Captain &middot; Gold Glover</div></div></div>
-      <div class="player-card reveal"><div class="player-num">4</div><div class="player-details"><div class="player-name">Francisco Alvarez</div><div class="player-pos">Catcher &middot; Age 24 &middot; Future Superstar</div></div></div>
-      <div class="player-card reveal"><div class="player-num">19</div><div class="player-details"><div class="player-name">Bo Bichette</div><div class="player-pos">Infield &middot; Age 28 &middot; $126M Deal &middot; Proven Hitter</div></div><span class="player-badge badge-new">New</span></div>
-      <div class="player-card reveal"><div class="player-num">88</div><div class="player-details"><div class="player-name">Luis Robert Jr.</div><div class="player-pos">Center Field &middot; Age 27 &middot; Five-Tool Weapon</div></div><span class="player-badge badge-new">New</span></div>
-      <div class="player-card reveal"><div class="player-num">7</div><div class="player-details"><div class="player-name">Brett Baty</div><div class="player-pos">Third Base &middot; Age 26 &middot; Breakout Candidate</div></div></div>
-      <div class="player-card reveal"><div class="player-num">1</div><div class="player-details"><div class="player-name">MJ Melendez</div><div class="player-pos">Left Field &middot; Age 27 &middot; Power Bat</div></div></div>
-      <div class="player-card reveal"><div class="player-num">0</div><div class="player-details"><div class="player-name">Ronny Mauricio</div><div class="player-pos">Infield &middot; Age 25 &middot; Rising Prospect</div></div></div>
-      <div class="player-card reveal"><div class="player-num">59</div><div class="player-details"><div class="player-name">Sean Manaea</div><div class="player-pos">SP &middot; Age 34 &middot; Rotation Anchor &middot; Veteran Lefty</div></div></div>
-      <div class="player-card reveal"><div class="player-num">51</div><div class="player-details"><div class="player-name">Freddy Peralta</div><div class="player-pos">SP &middot; Age 29 &middot; Opening Day Starter &middot; From MIL</div></div><span class="player-badge badge-new">New</span></div>
-      <div class="player-card reveal"><div class="player-num">35</div><div class="player-details"><div class="player-name">Clay Holmes</div><div class="player-pos">SP &middot; Age 33 &middot; Converted Sinker Machine</div></div></div>
-      <div class="player-card reveal"><div class="player-num">23</div><div class="player-details"><div class="player-name">David Peterson</div><div class="player-pos">SP &middot; Age 30 &middot; Homegrown Queens Lefty</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('soto')"><div class="player-num">22</div><div class="player-details"><div class="player-name">Juan Soto</div><div class="player-pos">Right Field &middot; Age 27 &middot; $765M</div></div><span class="player-badge badge-fav">Fan Fav</span></div>
+      <div class="player-card reveal" onclick="openPlayer('lindor')"><div class="player-num">12</div><div class="player-details"><div class="player-name">Francisco Lindor</div><div class="player-pos">Shortstop &middot; Age 32 &middot; Team Captain</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('alvarez')"><div class="player-num">4</div><div class="player-details"><div class="player-name">Francisco Alvarez</div><div class="player-pos">Catcher &middot; Age 24</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('bichette')"><div class="player-num">19</div><div class="player-details"><div class="player-name">Bo Bichette</div><div class="player-pos">Infield &middot; Age 28 &middot; $126M</div></div><span class="player-badge badge-new">New</span></div>
+      <div class="player-card reveal" onclick="openPlayer('robert')"><div class="player-num">88</div><div class="player-details"><div class="player-name">Luis Robert Jr.</div><div class="player-pos">Center Field &middot; Age 27</div></div><span class="player-badge badge-new">New</span></div>
+      <div class="player-card reveal" onclick="openPlayer('baty')"><div class="player-num">7</div><div class="player-details"><div class="player-name">Brett Baty</div><div class="player-pos">Third Base &middot; Age 26</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('melendez')"><div class="player-num">1</div><div class="player-details"><div class="player-name">MJ Melendez</div><div class="player-pos">Left Field &middot; Age 27</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('mauricio')"><div class="player-num">0</div><div class="player-details"><div class="player-name">Ronny Mauricio</div><div class="player-pos">Infield &middot; Age 25</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('manaea')"><div class="player-num">59</div><div class="player-details"><div class="player-name">Sean Manaea</div><div class="player-pos">SP &middot; Age 34</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('peralta')"><div class="player-num">51</div><div class="player-details"><div class="player-name">Freddy Peralta</div><div class="player-pos">SP &middot; Age 29 &middot; Opening Day Starter</div></div><span class="player-badge badge-new">New</span></div>
+      <div class="player-card reveal" onclick="openPlayer('holmes')"><div class="player-num">35</div><div class="player-details"><div class="player-name">Clay Holmes</div><div class="player-pos">SP &middot; Age 33</div></div></div>
+      <div class="player-card reveal" onclick="openPlayer('peterson')"><div class="player-num">23</div><div class="player-details"><div class="player-name">David Peterson</div><div class="player-pos">SP &middot; Age 30</div></div></div>
     </div>
   </div>
   </div>
@@ -397,7 +429,6 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
     <div class="footer-sub">Blue &amp; Orange Forever &middot; Citi Field, Queens NY &middot; Est. 1962</div>
   </footer>
 </div>
-
 <!-- ═══════════════ SCHEDULE ═══════════════ -->
 <div class="page" id="page-schedule">
   <div class="dark-section">
@@ -473,12 +504,12 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
 <div class="page" id="page-history">
   <div style="background:var(--light);">
   <div class="section-wrap">
-    <div class="section-header reveal"><div><div class="section-tag">Retired Numbers</div><h2 class="section-title">Mets Legends</h2></div></div>
+    <div class="section-header reveal"><div><div class="section-tag">Retired Numbers</div><h2 class="section-title">Mets Legends</h2></div><div style="font-size:0.78rem;color:var(--muted);">Click a legend for their story</div></div>
     <div class="legends-grid">
-      <div class="legend-card reveal"><div class="legend-num">41</div><div class="legend-name">Tom Seaver</div><div class="legend-era">1967&ndash;1977 &middot; 1983</div><div class="legend-desc">The Franchise. Greatest Met ever. 1969 World Series hero and Hall of Famer.</div></div>
-      <div class="legend-card reveal"><div class="legend-num">31</div><div class="legend-name">Mike Piazza</div><div class="legend-era">1998&ndash;2005</div><div class="legend-desc">Greatest hitting catcher in history. His post-9/11 home run is one of baseball's most iconic moments.</div></div>
-      <div class="legend-card reveal"><div class="legend-num">16</div><div class="legend-name">Dwight Gooden</div><div class="legend-era">1984&ndash;1994</div><div class="legend-desc">Doc was unhittable in his prime. His 1985 season is one of the greatest pitching years ever recorded.</div></div>
-      <div class="legend-card reveal"><div class="legend-num">14</div><div class="legend-name">Gil Hodges</div><div class="legend-era">Manager 1968&ndash;1971</div><div class="legend-desc">Led the Miracle Mets to the 1969 title. One of the most beloved figures in franchise history.</div></div>
+      <div class="legend-card reveal" onclick="openLegend('seaver')"><div class="legend-num">41</div><div class="legend-name">Tom Seaver</div><div class="legend-era">1967&ndash;1977 &middot; 1983</div><div class="legend-desc">The Franchise. Greatest Met ever. 1969 World Series hero and Hall of Famer.</div></div>
+      <div class="legend-card reveal" onclick="openLegend('piazza')"><div class="legend-num">31</div><div class="legend-name">Mike Piazza</div><div class="legend-era">1998&ndash;2005</div><div class="legend-desc">Greatest hitting catcher in history. His post-9/11 home run is one of baseball's most iconic moments.</div></div>
+      <div class="legend-card reveal" onclick="openLegend('gooden')"><div class="legend-num">16</div><div class="legend-name">Dwight Gooden</div><div class="legend-era">1984&ndash;1994</div><div class="legend-desc">Doc was unhittable in his prime. His 1985 season is one of the greatest pitching years ever recorded.</div></div>
+      <div class="legend-card reveal" onclick="openLegend('hodges')"><div class="legend-num">14</div><div class="legend-name">Gil Hodges</div><div class="legend-era">Manager 1968&ndash;1971</div><div class="legend-desc">Led the Miracle Mets to the 1969 title. One of the most beloved figures in franchise history.</div></div>
     </div>
   </div>
   </div>
@@ -490,7 +521,7 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
       <div class="fact-card reveal"><div class="fact-num">65</div><div class="fact-label">Years of Baseball</div><div class="fact-desc">The Mets have been playing since 1962, first at the Polo Grounds, then Shea Stadium, then Citi Field.</div></div>
       <div class="fact-card reveal"><div class="fact-num">41K</div><div class="fact-label">Citi Field Capacity</div><div class="fact-desc">Opened in 2009, Citi Field holds 41,922 fans and is one of the best ballparks in the majors.</div></div>
       <div class="fact-card reveal"><div class="fact-num">7</div><div class="fact-label">Retired Numbers</div><div class="fact-desc">Hodges (14), Stengel (37), Robinson (42), Seaver (41), Piazza (31), Koosman (36), Gooden (16).</div></div>
-      <div class="fact-card reveal"><div class="fact-num">$765M</div><div class="fact-label">Soto's Deal</div><div class="fact-desc">Juan Soto's contract is one of the largest in baseball history, cementing him as the face of the franchise.</div></div>
+      <div class="fact-card reveal"><div class="fact-num">264</div><div class="fact-label">Alonso's HRs</div><div class="fact-desc">Pete Alonso is the all-time Mets home run leader, passing Darryl Strawberry in 2025 with his 253rd career blast.</div></div>
       <div class="fact-card reveal"><div class="fact-num">1969</div><div class="fact-label">The Miracle Year</div><div class="fact-desc">The "Miracle Mets" were 100-to-1 underdogs who shocked the world by winning the World Series.</div></div>
     </div>
   </div>
@@ -523,14 +554,16 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
     <div class="footer-sub">Blue &amp; Orange Forever &middot; Citi Field, Queens NY &middot; Est. 1962</div>
   </footer>
 </div>
-
 <!-- ═══════════════ FAN ZONE ═══════════════ -->
 <div class="page" id="page-fanzone">
   <div style="background:var(--light);">
   <div class="section-wrap">
-    <div class="section-header reveal"><div><div class="section-tag">Test Your Knowledge</div><h2 class="section-title">Mets Trivia</h2></div></div>
+    <div class="section-header reveal"><div><div class="section-tag">Test Your Knowledge</div><h2 class="section-title">Mets Trivia</h2><p style="font-size:0.82rem;color:var(--muted);margin-top:8px;">100 questions &mdash; see how you stack up</p></div></div>
     <div class="quiz-box reveal">
-      <div class="quiz-counter" id="quiz-counter">Question 1 of 6</div>
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress-bar-track"><div class="quiz-progress-bar-fill" id="quiz-prog-bar" style="width:0%"></div></div>
+        <div class="quiz-progress-label"><span id="quiz-counter">Question 1 of 100</span><span class="quiz-pct-display" id="quiz-pct-live">0%</span></div>
+      </div>
       <div class="quiz-q" id="quiz-q">Loading...</div>
       <div class="quiz-options" id="quiz-opts"></div>
       <div class="quiz-result" id="quiz-result"></div>
@@ -543,12 +576,14 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
     <div class="section-header reveal"><div><div class="section-tag">Fan Vote</div><h2 class="section-title">Fan Poll</h2></div></div>
     <div class="poll-box reveal">
       <div class="poll-q">Who will be the Mets' best player in 2026?</div>
-      <div class="poll-options" id="poll-opts">
-        <div class="poll-opt" onclick="vote(this,52)"><div class="poll-bar"></div><div class="poll-opt-text"><span>Juan Soto</span><span class="poll-pct">52%</span></div></div>
-        <div class="poll-opt" onclick="vote(this,24)"><div class="poll-bar"></div><div class="poll-opt-text"><span>Francisco Alvarez</span><span class="poll-pct">24%</span></div></div>
-        <div class="poll-opt" onclick="vote(this,14)"><div class="poll-bar"></div><div class="poll-opt-text"><span>Francisco Lindor</span><span class="poll-pct">14%</span></div></div>
-        <div class="poll-opt" onclick="vote(this,10)"><div class="poll-bar"></div><div class="poll-opt-text"><span>Bo Bichette</span><span class="poll-pct">10%</span></div></div>
+      <div id="poll-loading" style="padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;letter-spacing:1px;">Loading votes...</div>
+      <div class="poll-options" id="poll-opts" style="display:none;">
+        <div class="poll-opt" data-player="soto" onclick="castVote('soto')"><div class="poll-bar" id="bar-soto"></div><div class="poll-opt-text"><span>Juan Soto</span><span class="poll-pct" id="pct-soto">0%</span></div></div>
+        <div class="poll-opt" data-player="alvarez" onclick="castVote('alvarez')"><div class="poll-bar" id="bar-alvarez"></div><div class="poll-opt-text"><span>Francisco Alvarez</span><span class="poll-pct" id="pct-alvarez">0%</span></div></div>
+        <div class="poll-opt" data-player="lindor" onclick="castVote('lindor')"><div class="poll-bar" id="bar-lindor"></div><div class="poll-opt-text"><span>Francisco Lindor</span><span class="poll-pct" id="pct-lindor">0%</span></div></div>
+        <div class="poll-opt" data-player="bichette" onclick="castVote('bichette')"><div class="poll-bar" id="bar-bichette"></div><div class="poll-opt-text"><span>Bo Bichette</span><span class="poll-pct" id="pct-bichette">0%</span></div></div>
       </div>
+      <div id="poll-footer" style="padding:12px 0 0;font-size:0.72rem;color:var(--muted);letter-spacing:1px;display:none;"><span id="poll-total">0</span> votes cast &mdash; results update live</div>
     </div>
   </div>
   </div>
@@ -587,7 +622,22 @@ footer{background:var(--blue-dark,#001a45);text-align:center;padding:60px 24px;b
     <div class="footer-sub">Blue &amp; Orange Forever &middot; Citi Field, Queens NY &middot; Est. 1962</div>
   </footer>
 </div>
-
+<!-- PLAYER MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+      <div class="modal-number" id="m-num"></div>
+      <div class="modal-name" id="m-name"></div>
+      <div class="modal-sub" id="m-sub"></div>
+      <div class="modal-badge-row" id="m-badges"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-stats" id="m-stats"></div>
+      <div class="modal-bio" id="m-bio"></div>
+    </div>
+  </div>
+</div>
 <script>
 // ── PAGE NAV ──
 function showPage(id) {
@@ -597,14 +647,9 @@ function showPage(id) {
   pg.classList.add('active');
   document.getElementById('nav-' + id).classList.add('active');
   window.scrollTo({top:0, behavior:'instant'});
-  // re-trigger reveals on new page
   setTimeout(() => {
-    pg.querySelectorAll('.reveal').forEach(el => {
-      el.classList.remove('visible');
-      revealObserver.observe(el);
-    });
+    pg.querySelectorAll('.reveal').forEach(el => { el.classList.remove('visible'); revealObserver.observe(el); });
   }, 10);
-  // open first schedule month when switching to schedule
   if (id === 'schedule') {
     const first = pg.querySelector('.sched-month-head');
     if (first && !first.nextElementSibling.classList.contains('open')) toggleMonth(first);
@@ -622,61 +667,237 @@ function updateCountdown() {
 }
 setInterval(updateCountdown, 1000); updateCountdown();
 
-// ── SCHEDULE ACCORDION ──
+// ── SCHEDULE ──
 function toggleMonth(h) {
   const b = h.nextElementSibling, a = h.querySelector('.sched-month-arrow'), o = b.classList.contains('open');
   b.classList.toggle('open', !o); a.classList.toggle('open', !o);
 }
 
-// ── TRIVIA ──
-const questions = [
-  {q:"What year did the Mets win their first World Series?",opts:["1962","1969","1973","1977"],ans:1},
-  {q:"Who is the Mets all-time home run leader?",opts:["Tom Seaver","Mike Piazza","Darryl Strawberry","David Wright"],ans:2},
-  {q:"What is the name of the Mets current home stadium?",opts:["Shea Stadium","Yankee Stadium","Citi Field","Oracle Park"],ans:2},
-  {q:"Which Mets legend wore number 41 and had his jersey retired?",opts:["Mike Piazza","Tom Seaver","Dwight Gooden","Keith Hernandez"],ans:1},
-  {q:"How much did Juan Soto sign for with the Mets?",opts:["$450M","$600M","$765M","$800M"],ans:2},
-  {q:"The Miracle Mets of 1969 were considered how big an underdog?",opts:["10-to-1","50-to-1","100-to-1","200-to-1"],ans:2},
-];
-let cur=0, sc=0, answered=false;
-function loadQ() {
-  const q = questions[cur];
-  document.getElementById('quiz-counter').textContent = 'Question ' + (cur+1) + ' of ' + questions.length;
-  document.getElementById('quiz-q').textContent = q.q;
-  document.getElementById('quiz-result').className = 'quiz-result';
-  document.getElementById('quiz-next').className = 'quiz-next';
-  answered = false;
-  const el = document.getElementById('quiz-opts'); el.innerHTML = '';
-  q.opts.forEach((o,i) => { const b = document.createElement('button'); b.className='quiz-opt'; b.textContent=o; b.onclick=()=>checkA(i,b); el.appendChild(b); });
-}
-function checkA(i, btn) {
-  if (answered) return; answered = true;
-  const q = questions[cur], r = document.getElementById('quiz-result');
-  document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
-  if (i === q.ans) { sc++; r.textContent = 'Correct! Great Mets knowledge!'; r.className = 'quiz-result show correct'; }
-  else { btn.classList.add('wrong'); r.textContent = 'Not quite! The answer is: ' + q.opts[q.ans]; r.className = 'quiz-result show wrong'; }
-  const nxt = document.getElementById('quiz-next');
-  nxt.innerHTML = cur === questions.length-1 ? '<button class="btn btn-primary" onclick="showScore()">See My Score &rarr;</button>' : '<button class="btn btn-primary" onclick="nextQ()">Next Question &rarr;</button>';
-  nxt.className = 'quiz-next show';
-}
-function nextQ() { cur++; loadQ(); }
-function showScore() {
-  document.getElementById('quiz-counter').textContent = 'Quiz Complete!';
-  document.getElementById('quiz-q').textContent = sc>=5 ? 'You are a true Mets fan!' : sc>=3 ? 'Not bad, keep watching!' : 'Time to brush up on Mets history!';
-  document.getElementById('quiz-opts').innerHTML = '<div class="quiz-score">' + sc + '<span>/' + questions.length + '</span></div>';
-  document.getElementById('quiz-result').className = 'quiz-result';
-  document.getElementById('quiz-next').innerHTML = '<button class="btn btn-primary" onclick="restartQ()">Play Again</button>';
-  document.getElementById('quiz-next').className = 'quiz-next show';
-}
-function restartQ() { cur=0; sc=0; loadQ(); }
-loadQ();
+// ── PLAYER DATA ──
+const players = {
+  soto: {
+    num:'22', name:`Juan Soto`, sub:`Right Field &middot; Age 27 &middot; Dominican Republic`,
+    badges:['Fan Favorite','$765M Contract','5&times; All-Star'],
+    stats:[{v:'$765M',l:'Contract'},{v:'.285',l:'Career AVG'},{v:'27',l:'Age'}],
+    bio:`Juan Soto is one of the most gifted hitters of his generation. Born in Santo Domingo, he debuted with the Nationals at just 19 years old and immediately looked like a Hall of Famer. Known for his elite plate discipline, devastating walk rate, and the "Soto Shuffle" &mdash; his trademark dance in the batter&rsquo;s box taunting pitchers &mdash; he is a threat every single at-bat.<br><br>In 2025, Soto signed the largest contract in baseball history with the Mets: 15 years, $765 million. Steve Cohen didn&rsquo;t blink. Soto immediately became the face of the franchise and the most talked-about player in New York. With elite bat-to-ball skills, an exceptional eye, and power to all fields, Queens is expecting a monster 2026.`
+  },
+  lindor: {
+    num:'12', name:`Francisco Lindor`, sub:`Shortstop &middot; Age 32 &middot; Puerto Rico`,
+    badges:['Team Captain','4&times; All-Star','Gold Glove SS'],
+    stats:[{v:'4&times;',l:'All-Star'},{v:'.280',l:'Career AVG'},{v:'$341M',l:'Contract'}],
+    bio:`Francisco Lindor is the heart and soul of the New York Mets &mdash; a Gold Glove shortstop who plays with elite defensive instincts and brings electricity to Citi Field every night. Born in Caguas, Puerto Rico, Lindor came up through the Cleveland system and became one of the most complete players in baseball.<br><br>The Mets acquired him in 2021 and immediately signed him to a 10-year, $341 million extension. He was named team captain in 2023 &mdash; a rare honor in baseball &mdash; and has embraced the role with leadership and passion. A switch hitter with pop from both sides, his infectious smile and flair for the dramatic make him one of the most marketable stars in the game.`
+  },
+  alvarez: {
+    num:'4', name:`Francisco Alvarez`, sub:`Catcher &middot; Age 24 &middot; Venezuela`,
+    badges:['Top-10 Prospect','Power Bat','Future Star'],
+    stats:[{v:'24',l:'Age'},{v:'#1',l:'Prospect Rank (2023)'},{v:'Top 5',l:'NL Catchers'}],
+    bio:`Francisco Alvarez is the future of catching in the National League. Born in Venezuela, he was the consensus #1 prospect in all of baseball in 2023 before making his debut &mdash; and he has not disappointed. Alvarez combines elite raw power with an advanced approach at the plate for someone so young.<br><br>At 24, he is entering what should be his first full prime season. His cannon arm behind the plate is one of the best in baseball, and his ability to hit for power from the right side is rare for a catcher at any age. The Mets believe Alvarez will be a cornerstone of this franchise for the next decade.`
+  },
+  bichette: {
+    num:'19', name:`Bo Bichette`, sub:`Infield &middot; Age 28 &middot; Nashville, TN`,
+    badges:['New Addition','$126M Deal','Son of Dante Bichette'],
+    stats:[{v:'$126M',l:'Contract'},{v:'.290',l:'Career AVG'},{v:'All-Star',l:'2023'}],
+    bio:`Bo Bichette comes from baseball royalty &mdash; his father Dante Bichette was a four-time All-Star &mdash; and Bo has carved out his own legacy as one of the best contact hitters in the American League. After spending his entire career with the Toronto Blue Jays, Bichette signed with the Mets in the 2026 offseason for $126 million.<br><br>Known for his outstanding bat-to-ball skills, Bichette rarely strikes out and consistently hits for average with moderate power. He brings championship experience, a professional approach, and a hit-first mentality that perfectly complements the Mets&rsquo; lineup of power bats. Queens is excited to see what he can do in orange and blue.`
+  },
+  robert: {
+    num:'88', name:`Luis Robert Jr.`, sub:`Center Field &middot; Age 27 &middot; Cuba`,
+    badges:['New Addition','Five-Tool Player','Gold Glove CF'],
+    stats:[{v:'5-Tool',l:'Player'},{v:'Gold Glove',l:'Defense'},{v:'6ft 2in',l:'Height'}],
+    bio:`Luis Robert Jr. is one of the most physically gifted players in baseball. A Cuban defector who signed with the Chicago White Sox as an international free agent, Robert is a true five-tool center fielder &mdash; he can hit, hit for power, run, throw, and field at an elite level.<br><br>His speed in center field is breathtaking, routinely making highlight-reel catches that seem impossible. His arm is one of the strongest in the outfield. After several injury-plagued seasons in Chicago, the Mets acquired Robert and are betting that a change of scenery and a healthy 2026 campaign will let him finally live up to his enormous potential. When he is right, Robert can be one of the best players in baseball.`
+  },
+  baty: {
+    num:'7', name:`Brett Baty`, sub:`Third Base &middot; Age 26 &middot; Lake Travis, TX`,
+    badges:['Homegrown Met','Breakout Candidate','Power LHB'],
+    stats:[{v:'26',l:'Age'},{v:'2B/3B',l:'Versatile'},{v:'Power',l:'Left-Handed Bat'}],
+    bio:`Brett Baty is a Texas kid who the Mets drafted in the first round in 2019, and the organization has been patient developing him through the system. A natural hitter with left-handed pop, Baty has shown flashes of the player the Mets believed they were getting &mdash; a high-average third baseman with 25+ home run potential.<br><br>At 26, 2026 is a pivotal year for Baty to establish himself as a consistent big-league contributor. The Mets staff believes in his swing mechanics and approach at the plate. If he can put together a full healthy season and iron out some plate discipline issues, Baty has the tools to be an above-average MLB third baseman for years to come.`
+  },
+  melendez: {
+    num:'1', name:`MJ Melendez`, sub:`Left Field &middot; Age 27 &middot; Miami, FL`,
+    badges:['Power Bat','Versatile','Left Field'],
+    stats:[{v:'27',l:'Age'},{v:'Power',l:'LHB'},{v:'Versatile',l:'Defender'}],
+    bio:`MJ Melendez is a Florida native who came up through the Kansas City Royals organization as a catcher before transitioning to the outfield. The Mets acquired him for his left-handed power bat and defensive versatility &mdash; he can play left field and also serve as a backup catcher if needed.<br><br>Melendez has impressive raw power and has shown the ability to put up big offensive numbers when he is healthy and in rhythm. In the Mets lineup, he fills an important role as a left-handed bat with pop behind the stars. His catching background also gives the Mets valuable roster flexibility that Manager Carlos Mendoza can utilize during a long 162-game season.`
+  },
+  mauricio: {
+    num:'0', name:`Ronny Mauricio`, sub:`Infield &middot; Age 25 &middot; Dominican Republic`,
+    badges:['Homegrown Talent','Switch Hitter','Rising Star'],
+    stats:[{v:'25',l:'Age'},{v:'Switch',l:'Hitter'},{v:'SS/3B',l:'Positions'}],
+    bio:`Ronny Mauricio is one of the Mets&rsquo; most intriguing homegrown talents. Signed out of the Dominican Republic as a teenager, Mauricio was long regarded as one of the top prospects in the Mets system thanks to his advanced bat and impressive athleticism at shortstop and third base.<br><br>A switch hitter with gap power and good instincts, Mauricio is still developing into his full potential at 25. The Mets hope he can settle into a consistent role in 2026 and show the skills that made scouts so excited about him. His raw tools &mdash; plus his ability to play multiple infield positions &mdash; make him a valuable piece of the roster going forward.`
+  },
+  manaea: {
+    num:'59', name:`Sean Manaea`, sub:`Starting Pitcher &middot; Age 34 &middot; Valparaiso, IN`,
+    badges:['Rotation Anchor','Veteran LHP','No-Hit Author'],
+    stats:[{v:'No-Hitter',l:'2021 vs Red Sox'},{v:'34',l:'Age'},{v:'LHP',l:'Veteran Lefty'}],
+    bio:`Sean Manaea is the veteran presence at the back of the Mets rotation. The left-hander from Indiana was a first-round draft pick who has had a long career with Oakland, San Diego, and New York. In 2021 with Oakland, he threw a no-hitter against the Boston Red Sox.<br><br>Manaea&rsquo;s calling card is his elite changeup &mdash; one of the best in baseball &mdash; which he tunnels with his fastball to neutralize right-handed hitters. At 34, he is in the twilight of his career but still a quality rotation piece who gives the Mets 5-6 innings of consistent performance. His experience and leadership in the clubhouse are as valuable as his arm.`
+  },
+  peralta: {
+    num:'51', name:`Freddy Peralta`, sub:`Starting Pitcher &middot; Age 29 &middot; Dominican Republic`,
+    badges:['Opening Day Starter','New Addition','Power Arm'],
+    stats:[{v:'3.5',l:'Career ERA (est)'},{v:'10+',l:'K/9 Rate'},{v:'DOM',l:'Born'}],
+    bio:`Freddy Peralta is the Mets&rsquo; new Opening Day starter, acquired from the Milwaukee Brewers in the 2026 offseason. A power right-hander from the Dominican Republic, Peralta attacks hitters with a mid-90s fastball, a wipeout curveball, and a changeup that generates whiffs at an elite rate.<br><br>After years of being one of the most underrated pitchers in the National League while pitching in Milwaukee, Peralta finally gets his moment in the spotlight on the biggest stage in baseball: Opening Day at Citi Field. His swing-and-miss stuff plays up even further in big moments, and the Mets expect him to be a true ace-level performer in 2026. Queens is ready for him.`
+  },
+  holmes: {
+    num:'35', name:`Clay Holmes`, sub:`Starting Pitcher &middot; Age 33 &middot; Slocomb, AL`,
+    badges:['Converted Starter','Sinker Specialist','Former Yankee'],
+    stats:[{v:'Sinker',l:'Elite Pitch'},{v:'33',l:'Age'},{v:'NYY &rarr; NYM',l:'Cross-Town'}],
+    bio:`Clay Holmes is an Alabama-born right-hander who built his reputation as one of the most dominant closers in baseball with the rival New York Yankees. His elite sinker generated some of the highest ground ball rates in all of baseball, and he was nearly unhittable during stretches of his Yankee tenure.<br><br>In 2026, the Mets made the fascinating decision to convert Holmes from the bullpen to a starting role &mdash; a gamble, but one they believe his stuff can support. His sinker/slider combo is a nightmare for hitters and his durability is unquestioned. Mets fans will particularly enjoy watching a former Yankee succeed in Queens.`
+  },
+  peterson: {
+    num:'23', name:`David Peterson`, sub:`Starting Pitcher &middot; Age 30 &middot; Portland, OR`,
+    badges:['Homegrown Met','Crafty LHP','Oregon Kid'],
+    stats:[{v:'LHP',l:'Southpaw'},{v:'30',l:'Age'},{v:'UoO',l:'Oregon Alumni'}],
+    bio:`David Peterson is the ultimate homegrown Met &mdash; drafted by New York, developed by New York, and still here grinding in the big leagues. The left-hander from Portland, Oregon went to the University of Oregon before the Mets made him a first-round pick in 2017.<br><br>Peterson is not a power pitcher. He relies on location, sequencing, and an excellent changeup to get through lineups. He has shown steady improvement year over year and earned his spot in the 2026 rotation through consistency and durability. The Citi Field faithful love Peterson for his grit and his willingness to compete every five days. He is everything you want in a number four starter.`
+  }
+};
 
-// ── POLL ──
-function vote(el, pct) {
-  const c = document.getElementById('poll-opts');
-  if (c.classList.contains('poll-voted')) return;
-  c.classList.add('poll-voted'); el.classList.add('winner');
-  document.querySelectorAll('.poll-opt').forEach(o => { o.querySelector('.poll-bar').style.width = parseInt(o.querySelector('.poll-pct').textContent) + '%'; });
+// ── LEGEND DATA ──
+const legends = {
+  seaver: {
+    num:'41', name:`Tom Seaver`, era:`1967&ndash;1977 &middot; 1983`,
+    stats:[{v:'311',l:'Career Wins'},{v:'2.86',l:'Career ERA'},{v:'3,640',l:'Strikeouts'}],
+    bio:`Tom Seaver is simply the greatest pitcher in Mets history &mdash; and one of the greatest pitchers who ever lived. Born in Fresno, California, "Tom Terrific" joined the Mets in 1967 and immediately transformed a laughingstock expansion team into a legitimate contender.<br><br>In 1969, Seaver led the "Miracle Mets" to the most improbable World Series championship in baseball history, going 25-7 with a 2.21 ERA and winning the Cy Young Award. His #41 was retired by the Mets in 1988, and in 1992 he was inducted into the Baseball Hall of Fame with 98.84% of the vote &mdash; the highest percentage in history at the time. He passed away in 2020, but his legend lives forever in Queens.`
+  },
+  piazza: {
+    num:'31', name:`Mike Piazza`, era:`1998&ndash;2005`,
+    stats:[{v:'.308',l:'Career AVG'},{v:'427',l:'Career HRs'},{v:'396',l:'HRs as Catcher'}],
+    bio:`Mike Piazza is the greatest offensive catcher in the history of baseball. Drafted in the 62nd round as a favor to Tommy Lasorda &mdash; his godfather &mdash; Piazza defied every expectation to become a 12-time All-Star and one of the most feared hitters of his era.<br><br>His most iconic moment came on September 21, 2001 &mdash; just ten days after the September 11 attacks &mdash; when he hit a go-ahead two-run home run at Shea Stadium that moved an entire city to tears. That swing is one of the most emotional moments in New York sports history. Piazza was inducted into the Baseball Hall of Fame in 2016, proudly wearing a Mets cap on his plaque.`
+  },
+  gooden: {
+    num:'16', name:`Dwight Gooden`, era:`1984&ndash;1994`,
+    stats:[{v:'1.53',l:'ERA in 1985'},{v:'268',l:'Ks in 1985'},{v:'Cy Young',l:'1985 Winner'}],
+    bio:`Dwight "Doc" Gooden burst onto the scene in 1984 as an 18-year-old with a fastball that made hitters look helpless. His 1985 season &mdash; 24 wins, a 1.53 ERA, and 268 strikeouts &mdash; is arguably the greatest pitching season in modern baseball history. He was the definition of unhittable.<br><br>Gooden won the Cy Young Award in 1985 and was a cornerstone of the 1986 World Series champion Mets alongside Darryl Strawberry. Personal struggles cut short what could have been an all-time great career, but his peak was as good as anyone who ever took the mound. Mets fans remember Doc with love and reverence for what he gave the city of New York.`
+  },
+  hodges: {
+    num:'14', name:`Gil Hodges`, era:`Manager 1968&ndash;1971`,
+    stats:[{v:'1969',l:'World Series Win'},{v:'100',l:'Wins in 1969'},{v:'HOF',l:'2022 Inductee'}],
+    bio:`Gil Hodges was the manager who made the impossible possible. Taking over a Mets team that had never finished above .500, Hodges transformed the club into the 1969 World Series champions &mdash; the "Miracle Mets" &mdash; in one of the greatest upsets in sports history.<br><br>A beloved Brooklyn Dodgers first baseman in his playing days, Hodges was the calm, steady hand that guided a talented young pitching staff led by Tom Seaver. His players adored him, and New York embraced him as a hero. Hodges passed away in April 1972, just two years after winning it all. He was inducted into the Baseball Hall of Fame in 2022 &mdash; long overdue recognition for one of the game&rsquo;s finest managers.`
+  }
+};
+
+function openPlayer(id) {
+  const p = players[id];
+  document.getElementById('m-num').textContent = p.num;
+  document.getElementById('m-name').innerHTML = p.name;
+  document.getElementById('m-sub').innerHTML = p.sub;
+  document.getElementById('m-badges').innerHTML = p.badges.map(b => `<span class="modal-tag modal-tag-blue">${b}</span>`).join('');
+  document.getElementById('m-stats').innerHTML = p.stats.map(s => `<div class="modal-stat"><div class="modal-stat-val">${s.v}</div><div class="modal-stat-lbl">${s.l}</div></div>`).join('');
+  document.getElementById('m-bio').innerHTML = p.bio;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
+
+function openLegend(id) {
+  const p = legends[id];
+  document.getElementById('m-num').textContent = '#' + p.num;
+  document.getElementById('m-name').innerHTML = p.name;
+  document.getElementById('m-sub').innerHTML = p.era;
+  document.getElementById('m-badges').innerHTML = '';
+  document.getElementById('m-stats').innerHTML = p.stats.map(s => `<div class="modal-stat"><div class="modal-stat-val">${s.v}</div><div class="modal-stat-lbl">${s.l}</div></div>`).join('');
+  document.getElementById('m-bio').innerHTML = p.bio;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── POLL (shared persistent storage - real votes) ──
+const POLL_STORAGE_KEY = 'mets-best-player-2026';
+const POLL_VOTED_KEY = 'mets-voted-2026';
+const POLL_PLAYERS = ['soto','alvarez','lindor','bichette'];
+
+async function loadPoll() {
+  document.getElementById('poll-loading').style.display = 'block';
+  document.getElementById('poll-opts').style.display = 'none';
+  document.getElementById('poll-footer').style.display = 'none';
+  let votes = {soto:0,alvarez:0,lindor:0,bichette:0};
+  try {
+    const result = await window.storage.get(POLL_STORAGE_KEY, true);
+    if (result) votes = JSON.parse(result.value);
+  } catch(e) {}
+  document.getElementById('poll-loading').style.display = 'none';
+  document.getElementById('poll-opts').style.display = 'flex';
+  document.getElementById('poll-footer').style.display = 'block';
+  renderPoll(votes);
+  // Check if user already voted
+  try {
+    const voted = await window.storage.get(POLL_VOTED_KEY);
+    if (voted) markVoted(voted.value, votes);
+  } catch(e) {}
+}
+
+function renderPoll(votes) {
+  const total = POLL_PLAYERS.reduce((s,p) => s + (votes[p]||0), 0);
+  const totalEl = document.getElementById('poll-total');
+  if (totalEl) totalEl.textContent = total === 0 ? 'Be the first to vote!' : total + (total === 1 ? ' vote' : ' votes');
+  POLL_PLAYERS.forEach(p => {
+    const pct = total > 0 ? Math.round(((votes[p]||0) / total) * 100) : 0;
+    const pctEl = document.getElementById('pct-'+p);
+    const barEl = document.getElementById('bar-'+p);
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (barEl) barEl.style.width = pct + '%';
+  });
+}
+
+function markVoted(winner, votes) {
+  const opts = document.getElementById('poll-opts');
+  if (!opts) return;
+  opts.classList.add('poll-voted');
+  POLL_PLAYERS.forEach(p => {
+    const bar = document.getElementById('bar-'+p);
+    if (!bar) return;
+    const opt = bar.closest('.poll-opt');
+    if (opt) {
+      opt.style.cursor = 'default';
+      opt.onclick = null;
+      if (p === winner) opt.classList.add('winner');
+    }
+  });
+}
+
+async function castVote(player) {
+  // Already voted?
+  try {
+    const voted = await window.storage.get(POLL_VOTED_KEY);
+    if (voted) return;
+  } catch(e) {}
+
+  // Get latest votes
+  let votes = {soto:0,alvarez:0,lindor:0,bichette:0};
+  try {
+    const result = await window.storage.get(POLL_STORAGE_KEY, true);
+    if (result) votes = JSON.parse(result.value);
+  } catch(e) {}
+
+  // Add vote
+  votes[player] = (votes[player]||0) + 1;
+
+  // Save shared votes + personal voted flag
+  try {
+    await window.storage.set(POLL_STORAGE_KEY, JSON.stringify(votes), true);
+    await window.storage.set(POLL_VOTED_KEY, player);
+  } catch(e) {}
+
+  renderPoll(votes);
+  markVoted(player, votes);
+}
+
+loadPoll();
+// Refresh votes every 30 seconds so totals stay live
+setInterval(async () => {
+  try {
+    const result = await window.storage.get(POLL_STORAGE_KEY, true);
+    if (result) {
+      const votes = JSON.parse(result.value);
+      renderPoll(votes);
+    }
+  } catch(e) {}
+}, 30000);
+
 
 // ── SCROLL REVEAL ──
 const revealObserver = new IntersectionObserver((entries) => {
