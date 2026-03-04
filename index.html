@@ -335,6 +335,7 @@ footer { background: var(--blue-dark); text-align: center; padding: 60px 24px; b
     <li><a href="#trivia">Trivia</a></li>
     <li><a href="#facts">Facts</a></li>
     <li><a href="#buzz">Buzz</a></li>
+    <li><a href="#news">News</a></li>
     <li><a href="https://www.mlb.com/mets/tickets" target="_blank" class="nav-ticket">Tickets</a></li>
   </ul>
 </nav>
@@ -551,6 +552,28 @@ footer { background: var(--blue-dark); text-align: center; padding: 60px 24px; b
     <div class="buzz-card reveal"><div class="buzz-icon">📈</div><div class="buzz-title">Alvarez Ascending</div><div class="buzz-text">Francisco Alvarez is 24 and entering his prime. One of the most exciting young catchers in baseball, built for a monster year.</div></div>
     <div class="buzz-card reveal"><div class="buzz-icon">🎯</div><div class="buzz-title">Deep Rotation</div><div class="buzz-text">Manaea, Peralta, Holmes, Peterson — real depth in the rotation. If they stay healthy, October baseball is very much in play.</div></div>
     <div class="buzz-card reveal"><div class="buzz-icon">🏟️</div><div class="buzz-title">Opening Day Is Here</div><div class="buzz-text">March 26 vs. Pittsburgh at Citi Field. The faithful are fired up. This is the year Queens brings it all the way home.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- TWITTER FEED -->
+<div class="dark-section">
+<div class="section-wrap" id="news">
+  <div class="section-header reveal">
+    <div><div class="section-tag">Live Updates</div><h2 class="section-title section-title-white">Mets Feed</h2></div>
+    <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);letter-spacing:1px;">Direct from @Mets — updates automatically</div>
+  </div>
+  <div style="display:flex;justify-content:center;">
+    <a class="twitter-timeline"
+       data-theme="dark"
+       data-chrome="nofooter noborders transparent"
+       data-tweet-limit="6"
+       data-width="700"
+       data-height="800"
+       href="https://twitter.com/Mets">
+      Tweets by @Mets
+    </a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>
 </div>
 </div>
