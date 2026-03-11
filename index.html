@@ -479,10 +479,21 @@ footer{background:var(--blue-dark);text-align:center;padding:60px 24px;border-to
   .trivia-sidebar{grid-template-columns:1fr 1fr;}
   .te-breakdown{grid-template-columns:1fr 1fr;}
 }
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:201;}
+.nav-hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .3s;}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+@media(max-width:700px){
+  .nav-hamburger{display:flex;}
+  .nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:var(--blue);flex-direction:column;gap:0;padding:8px 0 16px;border-bottom:3px solid var(--orange);z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+  .nav-links.open{display:flex;}
+  .nav-links li{width:100%;}
+  .nav-links button{width:100%;text-align:left;padding:14px 24px;font-size:.9rem;letter-spacing:1px;border-radius:0;}
+  .nav-links button:hover{background:rgba(255,255,255,.1);}
+}
 @media(max-width:600px){
-  nav{padding:0 12px;}
-  .nav-links{gap:2px;}
-  .nav-links button{font-size:.57rem;padding:5px 6px;letter-spacing:.5px;white-space:nowrap;}
+  nav{padding:0 16px;}
   .section-wrap{padding:50px 16px;}
   .sched-row{grid-template-columns:70px 1fr auto;padding:10px 14px;}
   .fz-tab{padding:12px 18px;font-size:.72rem;}
@@ -783,17 +794,20 @@ footer{background:var(--blue-dark);text-align:center;padding:60px 24px;border-to
 </style>
 </head>
 <body><nav>
-  <div class="nav-logo" onclick="showPage('home')"><div class="nav-badge">NY</div>METS 2026</div>
-  <ul class="nav-links">
-    <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
-    <li><button onclick="showPage('roster')" id="nav-roster">Roster</button></li>
-    <li><button onclick="showPage('schedule')" id="nav-schedule">Schedule</button></li>
-    <li><button onclick="showPage('history')" id="nav-history">History</button></li>
-    <li><button onclick="showPage('fanzone')" id="nav-fanzone">Fan Zone</button></li>
-    <li><button onclick="showPage('stats')" id="nav-stats">Stats</button></li>
-    <li><button onclick="showPage('points')" id="nav-points">🏆 Points</button></li>
+  <div class="nav-logo" onclick="showPage('home');closeMobileMenu()"><div class="nav-badge">NY</div>METS 2026</div>
+  <ul class="nav-links" id="nav-links-list">
+    <li><button onclick="showPage('home');closeMobileMenu()" id="nav-home" class="active">Home</button></li>
+    <li><button onclick="showPage('roster');closeMobileMenu()" id="nav-roster">Roster</button></li>
+    <li><button onclick="showPage('schedule');closeMobileMenu()" id="nav-schedule">Schedule</button></li>
+    <li><button onclick="showPage('history');closeMobileMenu()" id="nav-history">History</button></li>
+    <li><button onclick="showPage('fanzone');closeMobileMenu()" id="nav-fanzone">Fan Zone</button></li>
+    <li><button onclick="showPage('stats');closeMobileMenu()" id="nav-stats">Stats</button></li>
+    <li><button onclick="showPage('points');closeMobileMenu()" id="nav-points">🏆 Points</button></li>
     <li><button onclick="window.location='https://www.mlb.com/mets/tickets'" class="nav-ticket">Tickets</button></li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 <!-- ════ HOME ════ -->
 <div class="page active" id="page-home">
@@ -1690,6 +1704,17 @@ function _localSetStr(key, val) { _ss.setStr(key, val); }
 var sharedPoll  = _ss.get(POLL_KEY,  { soto: 0, alvarez: 0, lindor: 0, bichette: 0 }) || { soto: 0, alvarez: 0, lindor: 0, bichette: 0 };
 var sharedTakes = _ss.get(TAKES_KEY, []) || [];
 
+// Seed hot takes from the site — always present as a baseline
+var SEED_TAKES = [
+  { id:'seed-1', text:'Juan Soto will win the 2026 NL MVP. It\'s not even close.', time: Date.now()-3600000*24*3, agrees:[], disagrees:[], author:'Mets Army HQ' },
+  { id:'seed-2', text:'Clay Holmes starting is a stroke of genius. His sinker will be impossible to hit in long outings.', time: Date.now()-3600000*24*2, agrees:[], disagrees:[], author:'Mets Army HQ' },
+  { id:'seed-3', text:'Francisco Alvarez is going to put up a 30 HR season. The breakout is HAPPENING.', time: Date.now()-3600000*18, agrees:[], disagrees:[], author:'Mets Army HQ' },
+  { id:'seed-4', text:'The 2026 Mets are better than the 1986 squad. I said what I said.', time: Date.now()-3600000*12, agrees:[], disagrees:[], author:'Mets Army HQ' },
+  { id:'seed-5', text:'Brett Baty finally figures it out this year and becomes an All-Star by August.', time: Date.now()-3600000*6, agrees:[], disagrees:[], author:'Mets Army HQ' },
+];
+// Seed on first visit if empty
+if (sharedTakes.length === 0) { sharedTakes = SEED_TAKES.slice(); }
+
 function _loadSharedPoll() {
   _sharedGet(POLL_KEY, { soto: 0, alvarez: 0, lindor: 0, bichette: 0 }, function(data) {
     sharedPoll = data;
@@ -1700,10 +1725,11 @@ function _loadSharedPoll() {
 function _loadSharedTakes() {
   _sharedGet(TAKES_KEY, [], function(data) {
     if (Array.isArray(data)) {
-      // Merge: keep local takes not in shared store
+      var allIds = data.map(function(t){ return t.id; });
+      var seedToAdd = SEED_TAKES.filter(function(t){ return allIds.indexOf(t.id) === -1; });
       var sharedIds = data.map(function(t){ return t.id; });
-      var localOnly = sharedTakes.filter(function(t){ return sharedIds.indexOf(t.id) === -1; });
-      sharedTakes = data.concat(localOnly);
+      var localOnly = sharedTakes.filter(function(t){ return sharedIds.indexOf(t.id) === -1 && !SEED_TAKES.some(function(s){return s.id===t.id;}); });
+      sharedTakes = seedToAdd.concat(data).concat(localOnly);
       _ss.set(TAKES_KEY, sharedTakes);
       renderHotTakes();
     }
@@ -2091,8 +2117,10 @@ function renderHotTakes() {
   list.innerHTML = takes.map(function(t) {
     var vu = voted[t.id]==='up', vd = voted[t.id]==='down';
     var replies = Array.isArray(t.replies) ? t.replies : [];
+    var isOfficial = t.author === 'Mets Army HQ';
+    var authorBadge = isOfficial ? '<span style="font-size:.62rem;background:var(--orange);color:#fff;padding:2px 7px;border-radius:99px;font-weight:800;letter-spacing:.5px;margin-left:8px;">⚾ METS ARMY HQ</span>' : '';
     return '<div class="ht-card' + (t.pinned?' pinned':'') + '">' +
-      '<div class="ht-text">' + _escHtml(t.text) + '</div>' +
+      '<div class="ht-text">' + _escHtml(t.text) + authorBadge + '</div>' +
       '<div class="ht-actions">' +
         '<button class="ht-vote-btn' + (vu?' voted-up':'') + '" onclick="voteHotTake(\'' + t.id + '\',\'up\')">\uD83D\uDC4D ' + (t.up||0) + '</button>' +
         '<button class="ht-vote-btn' + (vd?' voted-down':'') + '" onclick="voteHotTake(\'' + t.id + '\',\'down\')">\uD83D\uDC4E ' + (t.down||0) + '</button>' +
@@ -2350,6 +2378,16 @@ function renderTTQ() {
   updateTTScore();
 }
 
+var TT_VOTES_KEY = 'mets-tt-votes-2026-v1';
+var ttVotesCache = {};
+
+function _loadTTVotes(cb) {
+  _fbRead(TT_VOTES_KEY, {}, function(data) {
+    ttVotesCache = data || {};
+    if (cb) cb();
+  });
+}
+
 function answerTT(choice) {
   var q = ttShuffled[ttIdx];
   if (!q) return;
@@ -2358,12 +2396,26 @@ function answerTT(choice) {
   _ss.setStr(LOCAL_TT_STREAK, String(ttStreak));
   document.getElementById('tt-btn-'+choice).className = 'thisthat-btn picked';
   document.getElementById('tt-btn-'+(choice==='a'?'b':'a')).className = 'thisthat-btn other';
+
+  // Record vote in Firebase
+  var key = q.q.replace(/[^a-zA-Z0-9]/g,'').substring(0,30);
+  var votes = ttVotesCache[key] || {a:0, b:0};
+  votes[choice] = (votes[choice]||0) + 1;
+  ttVotesCache[key] = votes;
+  var newVotes = JSON.parse(JSON.stringify(ttVotesCache));
+  _fbWrite(TT_VOTES_KEY, newVotes);
+
+  // Show real vote counts
+  var total = (votes.a||0) + (votes.b||0);
+  var pctA = total > 0 ? Math.round((votes.a||0)/total*100) : 50;
+  var pctB = 100 - pctA;
   document.getElementById('tt-label-a').textContent = q.a;
   document.getElementById('tt-label-b').textContent = q.b;
-  document.getElementById('tt-bar-a').style.width = q.aP+'%';
-  document.getElementById('tt-bar-b').style.width = q.bP+'%';
-  document.getElementById('tt-pct-a').textContent = q.aP+'%';
-  document.getElementById('tt-pct-b').textContent = q.bP+'%';
+  document.getElementById('tt-bar-a').style.width = pctA+'%';
+  document.getElementById('tt-bar-b').style.width = pctB+'%';
+  document.getElementById('tt-pct-a').textContent = pctA+'% ('+((votes.a||0))+' votes)';
+  document.getElementById('tt-pct-b').textContent = pctB+'% ('+((votes.b||0))+' votes)';
+
   var factEl = document.getElementById('tt-fact');
   if (factEl) { factEl.textContent = q.fact||''; factEl.className = q.fact?'tt-fact show':'tt-fact'; }
   document.getElementById('tt-community').classList.add('show');
@@ -2423,6 +2475,28 @@ function initRosterThumbs() {
   });
 }
 
+// ── MOBILE NAV ──
+function toggleMobileMenu() {
+  var nav = document.getElementById('nav-links-list');
+  var btn = document.getElementById('nav-hamburger');
+  var open = nav.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+function closeMobileMenu() {
+  var nav = document.getElementById('nav-links-list');
+  var btn = document.getElementById('nav-hamburger');
+  nav.classList.remove('open');
+  btn.classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  var nav = document.getElementById('nav-links-list');
+  var btn = document.getElementById('nav-hamburger');
+  if (nav && btn && !nav.contains(e.target) && !btn.contains(e.target)) {
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
+
 // ── BOOT ──
 renderPoll();
 _loadSharedPoll();
@@ -2435,6 +2509,7 @@ loadScorePredictor();
 renderHotTakes();
 _loadSharedTakes();
 setInterval(_loadSharedTakes, 60000);
+_loadTTVotes();
 startTT();
 
 
